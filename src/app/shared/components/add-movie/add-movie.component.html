@@ -15,7 +15,7 @@
                   <img src="../../../../assets/icons/movie.png" alt="Imagem">
                 </div>
                 <label class="inserir-imagem text-black-300 cursor-pointer hover:underline mt-2" for="photo">Inserir Imagem</label>
-                <input type="file" accept=".png, .jpg, .jpeg" id="photo" class="hidden">
+                <input type="file" accept=".png, .jpg, .jpeg" id="photo" class="hidden" (change)="onFileSelected($event)">
             </div>
 
             <!-- Título e Descrição -->

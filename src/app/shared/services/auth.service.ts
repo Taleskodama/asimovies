@@ -5,6 +5,7 @@ import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { Router } from '@angular/router';
 import { UserInterface } from '../interfaces/user-interface';
 import { Observable, of, switchMap } from 'rxjs';
+import { GoogleAuthProvider } from 'firebase/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -80,6 +81,44 @@ getUserData(): Observable<any>{
       }
     })
   )
+}
+
+// Login/Cadastro via Google
+async signInWithGoogle() {
+  try {
+    const provider = new GoogleAuthProvider();
+    const credential = await this.auth.signInWithPopup(provider);
+
+    if (credential.user) {
+      // Salvar usuário no Firestore
+      this.saveUserData(credential.user);
+      this.router.navigate(['/home']); // Redireciona para Home após login
+    }
+  } catch (error) {
+    console.error('Erro ao fazer login com Google:', error);
+  }
+}
+
+// Salvar usuário no Firestore
+private saveUserData(user: any) {
+  const userRef = this.firestore.collection('users').doc(user.uid);
+  
+  userRef.set(
+    {
+      uid: user.uid,
+      name: user.displayName,
+      email: user.email,
+      photoURL: user.photoURL,
+      lastLogin: new Date()
+    },
+    { merge: true } // Evita sobrescrever dados existentes
+  );
+}
+
+// Método de logout
+async logoutgoogle() {
+  await this.auth.signOut();
+  this.router.navigate(['/login']); // Redireciona para a tela de login
 }
 
 }

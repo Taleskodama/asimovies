@@ -17,6 +17,7 @@ export class HomeComponent {
   movies: MovieInterface[] = []; 
   limit: number = 4; // 4 filmes no maximo por vez
   currentOffset: number = 0; // controle de visualização de filmes
+  editingMovie: any | null = null; // 🔹 Armazena o filme que está sendo editado
 
   constructor(private databaseService: DatabaseService){}
 
@@ -33,6 +34,18 @@ this.databaseService.getCollection('movies').subscribe((movies: MovieInterface[]
     }).catch(error =>{
       console.log(error)
     })
+  }
+
+  // 🔹 Abrir modal para editar filme
+  editMovie(movie: any) {
+    this.editingMovie = movie; // 🔹 Passa o filme para o modal
+    this.showAddMovieModal = true;
+  }
+
+  // 🔹 Abrir modal para adicionar filme
+  addMovie() {
+    this.editingMovie = null;
+    this.showAddMovieModal = true;
   }
 
     
