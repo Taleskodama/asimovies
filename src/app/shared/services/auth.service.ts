@@ -47,6 +47,7 @@ salvarDados(id: string, user: UserInterface ){
 login(email: string, password: string){
   this.auth.signInWithEmailAndPassword(email, password).then((userCredential)=>{
     if(userCredential.user?.emailVerified){
+      console.log('sucesso');
       this.router.navigate(['/home']);
     }
   })
